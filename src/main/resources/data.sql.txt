@@ -1,0 +1,35 @@
+-- rename the file to data.sql for the first time to dump the dummy data into the db
+
+INSERT INTO oauth_client_details
+    (client_id, client_secret, web_server_redirect_uri, scope, access_token_validity, refresh_token_validity,
+     resource_ids, authorized_grant_types, additional_information) VALUES
+    ('mobile', '{bcrypt}$2a$10$QeanrTqg4b0GhQQBDuREg.zJdRRW19KsDMqMUJMVrVSD24nZOSgvy', 'http://localhost:8080/code',
+     'READ,WRITE', '3600', '10000', 'inventory,payment', 'authorization_code,password,refresh_token,implicit', '{}');
+
+INSERT INTO permission (name) VALUES
+('create_profile'),
+('read_profile'),
+('update_profile'),
+('delete_profile');
+
+INSERT INTO role (name) VALUES
+('ROLE_admin'),('ROLE_operator');
+
+INSERT INTO permission_role (permission_id, role_id) VALUES
+(1,1), /*create-> admin */
+(2,1), /* read admin */
+(3,1), /* update admin */
+(4,1), /* delete admin */
+(2,2),  /* read operator */
+(3,2);  /* update operator */
+insert into user (id, username,password, email, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked)
+VALUES ('1', 'admin','{bcrypt}$2a$10$M9QuPHEMqZLgh7UKX9s0weE2qHmdbrm35DR7/KbL370eyUxUGNzMC', 'admin@localhost.com', '1', '1', '1', '1');
+-- admin:admin
+insert into  user (id, username,password, email, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked)
+VALUES ('2', 'user', '{bcrypt}$2a$10$4BQzTuhWQUUasv0Wyl.JeeH5YuxKGXl7YxHqICtVoS5ybr51goHwG','user@localhost.com', '1', '1', '1', '1');
+-- user:pass
+
+INSERT INTO role_user (role_id, user_id)
+VALUES
+(1, 1) /* admin-admin */,
+(2, 2) /* user-operator */ ;
