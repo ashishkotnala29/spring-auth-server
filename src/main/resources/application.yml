@@ -1,6 +1,8 @@
 server:
   port: 8080
 
+ldapServerUrl: ldap://localhost:8389/dc=springframework,dc=org
+
 security:
   signing-key: NXXvqCajSQhQaq5FpttOFzwqXdVurA4OeC1xHyaIaYXvN9Qkheg7HAuvNMx2Ndz
   realm-name: Spring Boot JWT Realm
@@ -9,6 +11,11 @@ resource-server:
   resourceId: testjwtresource
 
 spring:
+  ldap:
+    embedded:
+      port: 8389
+      ldif: classpath:ldap-data.ldif
+      base-dn: dc=springframework,dc=org
   datasource:
     url: jdbc:mysql://192.168.0.179:3306/authDB?createDatabaseIfNotExist=true
     username: root

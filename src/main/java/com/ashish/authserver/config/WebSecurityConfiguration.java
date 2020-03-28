@@ -24,6 +24,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Value("${ldapServerUrl}")
+    private String ldapServerUrl;
+
     @Value("${security.realm-name}")
     private String realmName;
 
@@ -46,6 +49,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.ldapAuthentication()
+                .userDnPatterns("uid={0},ou=people")
+                .groupSearchBase("ou=groups")
+                .contextSource()
+                .url(ldapServerUrl)
+                .and().passwordCompare()
+                .passwordEncoder(passwordEncoder())
+                .passwordAttribute("userPassword");
     }
 
     @Override

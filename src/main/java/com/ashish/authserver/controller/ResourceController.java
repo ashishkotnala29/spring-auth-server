@@ -20,4 +20,10 @@ public class ResourceController {
     public String testAdmin() {
         return "You're admin!";
     }
+
+    @GetMapping("/ldap")
+    @PreAuthorize("hasAuthority('ROLE_MANAGERS') or hasAuthority('ROLE_DEVELOPERS')")
+    public String testLdap() {
+        return "You're using LDAP!";
+    }
 }
