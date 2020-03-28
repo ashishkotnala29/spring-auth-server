@@ -1,10 +1,16 @@
 -- rename the file to data.sql for the first time to dump the dummy data into the db
 
+create index oauth_access_token_id on oauth_access_token(token_id);
+create index oauth_refresh_token_id on oauth_access_token(refresh_token);
+ALTER TABLE oauth_access_token ADD CONSTRAINT user_client_const UNIQUE (user_name,client_id);
+
 INSERT INTO oauth_client_details
     (client_id, client_secret, web_server_redirect_uri, scope, access_token_validity, refresh_token_validity,
-     resource_ids, authorized_grant_types, additional_information) VALUES
-    ('mobile', '{bcrypt}$2a$10$QeanrTqg4b0GhQQBDuREg.zJdRRW19KsDMqMUJMVrVSD24nZOSgvy', 'http://localhost:8080/code',
-     'READ,WRITE', '3600', '10000', 'inventory,payment', 'authorization_code,password,refresh_token,implicit', '{}');
+     resource_ids, authorized_grant_types, authorities, additional_information) VALUES
+    ('testjwtclientid', '{bcrypt}$2a$10$QeanrTqg4b0GhQQBDuREg.zJdRRW19KsDMqMUJMVrVSD24nZOSgvy', 'http://localhost:8080/jwttest/authed',
+     'READ,WRITE', '3600', '10000', 'oauth2-resource,testjwtresource', 'password,refresh_token,client_credentials,authorization_code',
+     'ROLE_CLIENT,ROLE_TRUSTED_CLIENT', '{}');
+-- testjwtclientid:pin
 
 INSERT INTO permission (name) VALUES
 ('create_profile'),
@@ -13,7 +19,7 @@ INSERT INTO permission (name) VALUES
 ('delete_profile');
 
 INSERT INTO role (name) VALUES
-('ROLE_admin'),('ROLE_operator');
+('ROLE_ADMIN'),('ROLE_USER');
 
 INSERT INTO permission_role (permission_id, role_id) VALUES
 (1,1), /*create-> admin */
