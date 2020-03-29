@@ -19,9 +19,10 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserRepository userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<User> optionalUser = userRepo.findByUsername(username);
-        optionalUser.orElseThrow(()-> new UsernameNotFoundException("Username/Password is wrong!"));
+        if(!optionalUser.isPresent())
+            throw new UsernameNotFoundException("Username/Password is wrong!");
         UserDetails userDetails = new AuthUserDetail(optionalUser.get());
         new AccountStatusUserDetailsChecker().check(userDetails);
         return userDetails;
