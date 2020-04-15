@@ -104,5 +104,11 @@
             </plugin>
         </plugins>
     </build>
-
+<distributionManagement>
+   <repository>
+     <id>github</id>
+     <name>GitHub OWNER Apache Maven Packages</name>
+     <url>https://maven.pkg.github.com/ashishkotnala29/spring-auth-server</url>
+   </repository>
+</distributionManagement>
 </project>
